@@ -40,7 +40,9 @@ public class MemberMapper {
         memberUser.setEmail(member.getEmail());
         memberUser.setDisplayName(member.getDisplayName());
         memberItem.setUser(memberUser);
-        memberItem.setRole(member.getRole());
+        if(member.getRoles() != null && !member.getRoles().isEmpty()) {
+            memberItem.setRole(member.getRoles().get(0).getName());
+        }
         memberItem.setUpdatedAt(member.getUpdatedAt().toInstant().atOffset(ZoneOffset.UTC));
         
         return memberItem;

@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.gravitee.common.utils.UUID;
 import io.gravitee.repository.exceptions.TechnicalException;
 import io.gravitee.repository.management.api.EnvironmentRepository;
 import io.gravitee.repository.management.model.Environment;
@@ -34,6 +33,7 @@ import io.gravitee.rest.api.model.UpdateEnvironmentEntity;
 import io.gravitee.rest.api.service.*;
 import io.gravitee.rest.api.service.common.GraviteeContext;
 import io.gravitee.rest.api.service.exceptions.*;
+import io.gravitee.rest.api.service.common.RandomString;
 
 /**
  * @author Florent CHAMFROY (florent.chamfroy at graviteesource.com)
@@ -96,7 +96,7 @@ public class EnvironmentServiceImpl extends TransactionalService implements Envi
         this.organizationService.findById(organizationId);
         
         try {
-            String id = UUID.toString(UUID.random());
+            String id = RandomString.generate();
             Optional<Environment> checkEnvironment = environmentRepository.findById(id);
             if (checkEnvironment.isPresent()) {
                 throw new EnvironmentAlreadyExistsException(id);
@@ -157,7 +157,7 @@ public class EnvironmentServiceImpl extends TransactionalService implements Envi
         environment.setId(id);
         environment.setName(environmentEntity.getName());
         environment.setDescription(environmentEntity.getDescription());
-        environment.setOrganization(organizationId);
+        environment.setOrganizationId(organizationId);
         environment.setDomainRestrictions(environmentEntity.getDomainRestrictions());
         return environment;
     }
@@ -167,7 +167,7 @@ public class EnvironmentServiceImpl extends TransactionalService implements Envi
         environment.setId(environmentEntity.getId());
         environment.setName(environmentEntity.getName());
         environment.setDescription(environmentEntity.getDescription());
-        environment.setOrganization(environmentEntity.getOrganizationId());
+        environment.setOrganizationId(environmentEntity.getOrganizationId());
         environment.setDomainRestrictions(environmentEntity.getDomainRestrictions());
         return environment;
     }
@@ -177,7 +177,7 @@ public class EnvironmentServiceImpl extends TransactionalService implements Envi
         environmentEntity.setId(environment.getId());
         environmentEntity.setName(environment.getName());
         environmentEntity.setDescription(environment.getDescription());
-        environmentEntity.setOrganizationId(environment.getOrganization());
+        environmentEntity.setOrganizationId(environment.getOrganizationId());
         environmentEntity.setDomainRestrictions(environment.getDomainRestrictions());
         return environmentEntity;
     }
@@ -188,7 +188,7 @@ public class EnvironmentServiceImpl extends TransactionalService implements Envi
         defaultEnvironment.setId(GraviteeContext.getDefaultEnvironment());
         defaultEnvironment.setName("Default environment");
         defaultEnvironment.setDescription("Default environment");
-        defaultEnvironment.setOrganization(GraviteeContext.getDefaultOrganization());
+        defaultEnvironment.setOrganizationId(GraviteeContext.getDefaultOrganization());
         try {
             environmentRepository.create(defaultEnvironment);
         } catch (TechnicalException ex) {

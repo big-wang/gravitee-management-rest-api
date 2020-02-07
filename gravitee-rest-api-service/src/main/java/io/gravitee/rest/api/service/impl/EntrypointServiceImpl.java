@@ -15,7 +15,6 @@
  */
 package io.gravitee.rest.api.service.impl;
 
-import io.gravitee.common.utils.UUID;
 import io.gravitee.repository.exceptions.TechnicalException;
 import io.gravitee.repository.management.api.EntrypointRepository;
 import io.gravitee.repository.management.model.Entrypoint;
@@ -25,6 +24,7 @@ import io.gravitee.rest.api.model.UpdateEntryPointEntity;
 import io.gravitee.rest.api.service.AuditService;
 import io.gravitee.rest.api.service.EntrypointService;
 import io.gravitee.rest.api.service.common.GraviteeContext;
+import io.gravitee.rest.api.service.common.RandomString;
 import io.gravitee.rest.api.service.exceptions.EntrypointNotFoundException;
 import io.gravitee.rest.api.service.exceptions.EntrypointTagsAlreadyExistsException;
 import io.gravitee.rest.api.service.exceptions.TechnicalManagementException;
@@ -167,7 +167,7 @@ public class EntrypointServiceImpl extends TransactionalService implements Entry
 
     private Entrypoint convert(final NewEntryPointEntity entrypointEntity) {
         final Entrypoint entrypoint = new Entrypoint();
-        entrypoint.setId(UUID.toString(UUID.random()));
+        entrypoint.setId(RandomString.generate());
         entrypoint.setValue(entrypointEntity.getValue());
         entrypoint.setTags(String.join(SEPARATOR, entrypointEntity.getTags()));
         return entrypoint;

@@ -15,7 +15,6 @@
  */
 package io.gravitee.rest.api.service.impl;
 
-import io.gravitee.common.utils.UUID;
 import io.gravitee.repository.exceptions.TechnicalException;
 import io.gravitee.repository.management.api.OrganizationRepository;
 import io.gravitee.repository.management.model.Organization;
@@ -25,6 +24,7 @@ import io.gravitee.rest.api.model.UpdateOrganizationEntity;
 import io.gravitee.rest.api.service.OrganizationService;
 import io.gravitee.rest.api.service.RoleService;
 import io.gravitee.rest.api.service.common.GraviteeContext;
+import io.gravitee.rest.api.service.common.RandomString;
 import io.gravitee.rest.api.service.exceptions.OrganizationAlreadyExistsException;
 import io.gravitee.rest.api.service.exceptions.OrganizationNotFoundException;
 import io.gravitee.rest.api.service.exceptions.TechnicalManagementException;
@@ -85,7 +85,7 @@ public class OrganizationServiceImpl extends TransactionalService implements Org
     @Override
     public OrganizationEntity create(final NewOrganizationEntity organizationEntity) {
         try {
-            String id = UUID.toString(UUID.random());
+            String id = RandomString.generate();
             Optional<Organization> checkOrganization = organizationRepository.findById(id);
             if (checkOrganization.isPresent()) {
                 throw new OrganizationAlreadyExistsException(id);

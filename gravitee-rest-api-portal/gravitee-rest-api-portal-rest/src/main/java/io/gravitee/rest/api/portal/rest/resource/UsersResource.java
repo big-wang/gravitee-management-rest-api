@@ -52,7 +52,7 @@ public class UsersResource extends AbstractResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Permissions({ @Permission(value = RolePermission.MANAGEMENT_USERS, acls = READ) })
+    @Permissions({ @Permission(value = RolePermission.ORGANIZATION_USERS, acls = READ) })
     public Response getUsers(@BeanParam PaginationParam paginationParam) {
         UserCriteria criteria = new UserCriteria.Builder().build();
         List<User> users = userService

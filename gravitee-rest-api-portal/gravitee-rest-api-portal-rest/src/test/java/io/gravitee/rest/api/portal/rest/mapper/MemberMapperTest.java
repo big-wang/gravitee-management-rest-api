@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
 
 import org.junit.Test;
@@ -28,6 +29,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import io.gravitee.rest.api.model.MemberEntity;
+import io.gravitee.rest.api.model.RoleEntity;
 import io.gravitee.rest.api.portal.rest.model.Member;
 import io.gravitee.rest.api.portal.rest.model.User;
 
@@ -53,13 +55,16 @@ public class MemberMapperTest {
         Date nowDate = Date.from(now);
 
         //init
+        RoleEntity ownerRoleEntity = new RoleEntity();
+        ownerRoleEntity.setName("OWNER");
+
         memberEntity = new MemberEntity();
        
         memberEntity.setCreatedAt(nowDate);
         memberEntity.setDisplayName(MEMBER_DISPLAYNAME);
         memberEntity.setEmail(MEMBER_EMAIL);
         memberEntity.setId(MEMBER_ID);
-        memberEntity.setRole("OWNER");
+        memberEntity.setRoles(Arrays.asList(ownerRoleEntity));
         memberEntity.setUpdatedAt(nowDate);
         
         //Test
